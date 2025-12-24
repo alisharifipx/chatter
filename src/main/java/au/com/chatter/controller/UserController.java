@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -11,10 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @AllArgsConstructor
+@RequestMapping("/api")
 public class UserController {
 
-    @GetMapping("/")
-    public String greeting(@AuthenticationPrincipal UserDetails user) {
+    @GetMapping("/welcome")
+    public String welcome(@AuthenticationPrincipal UserDetails user) {
         return String.format("Welcome, %s!", user.getUsername());
     }
 }
