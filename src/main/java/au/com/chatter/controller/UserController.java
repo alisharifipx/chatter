@@ -1,8 +1,10 @@
 package au.com.chatter.controller;
 
+import au.com.chatter.controller.dto.UserSessionDto;
+import au.com.chatter.domain.AppUserDetails;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,8 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class UserController {
 
-    @GetMapping("/welcome")
-    public String welcome(@AuthenticationPrincipal UserDetails user) {
-        return String.format("Welcome, %s!", user.getUsername());
+    @GetMapping("/session")
+    public ResponseEntity<UserSessionDto> getSession(@AuthenticationPrincipal AppUserDetails user) {
+        UserSessionDto response = new UserSessionDto(user.id(), user.username());
+
+        return ResponseEntity.ok(response);
     }
 }

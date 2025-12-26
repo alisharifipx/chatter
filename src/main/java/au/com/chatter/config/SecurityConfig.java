@@ -32,6 +32,14 @@ public class SecurityConfig {
             .formLogin(form -> form.loginProcessingUrl("/api/login")
                 .successHandler((request, response, authentication) -> response.setStatus(200))
                 .failureHandler((request, response, exception) -> response.setStatus(401))
+            )
+            .logout(logout -> logout
+                .logoutUrl("/api/logout")
+                .logoutSuccessHandler((request, response, authentication) -> {
+                    response.setStatus(HttpServletResponse.SC_OK);
+                })
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
             );
 
         return http.build();

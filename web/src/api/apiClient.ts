@@ -1,27 +1,10 @@
-import axios, {type AxiosInstance, type AxiosResponse, type InternalAxiosRequestConfig} from 'axios';
+import axios, {type AxiosInstance, type InternalAxiosRequestConfig} from 'axios';
 
 const client: AxiosInstance = axios.create({
     baseURL: '/api',
     timeout: 5000,
     withCredentials: true,
 });
-
-client.interceptors.request.use((config: InternalAxiosRequestConfig) => {
-    config.headers.Accept = 'application/json';
-
-    return config;
-});
-
-client.interceptors.response.use(
-    (response: AxiosResponse) => response,
-    (error) => {
-        if (error.response?.status === 401) {
-            console.error('Unauthorised', error.message);
-        }
-
-        return Promise.reject(error);
-    },
-);
 
 export async function apiGet<T>(url: string, config?: InternalAxiosRequestConfig) {
     const res = await client.get<T>(url, config);
