@@ -1,41 +1,67 @@
 package au.com.chatter.persistence.entity;
 
 import au.com.chatter.domain.AppUserDetails;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Database entity for an app user.
  */
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "APP_USER")
 public class AppUserEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
+    @Nullable
     private Long id;
+
     @Column(unique = true)
     private String username;
+
     private String password;
+
     @Column(unique = true)
     @Getter
     @Setter
     private String email;
+
+    @Builder.Default
     @Setter
-    private boolean enabled;
+    private boolean enabled = true;
+
     @Setter
     private boolean accountExpired;
+
     @Setter
     private boolean accountLocked;
+
     @Setter
     private boolean credentialsExpired;
+
+    public AppUserDetails toDomain() {
+        return new AppUserDetails(
+            Objects.requireNonNull(id, "Entity must be persisted before converting to domain"),
+            username,
+            password,
+            email,
+            enabled,
+            accountLocked,
+            accountExpired,
+            credentialsExpired
+        );
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -70,18 +96,5 @@ public class AppUserEntity implements UserDetails {
     @Override
     public boolean isCredentialsNonExpired() {
         return !credentialsExpired;
-    }
-
-    public AppUserDetails toDomain() {
-        return new AppUserDetails(
-            id,
-            username,
-            password,
-            email,
-            enabled,
-            accountLocked,
-            accountExpired,
-            credentialsExpired
-        );
     }
 }

@@ -1,6 +1,6 @@
 package au.com.chatter.controller.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import au.com.chatter.domain.AppUserDetails;
 
 /**
  * DTO representing an app user.
@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public record AppUserDto(
     Long id,
     String username,
-    @JsonIgnore String password,
     String email,
     boolean enabled,
     boolean accountExpired,
@@ -16,4 +15,15 @@ public record AppUserDto(
     boolean credentialsExpired
 ) {
 
+    public static AppUserDto fromDomain(AppUserDetails appUserDetails) {
+        return new AppUserDto(
+            appUserDetails.id(),
+            appUserDetails.username(),
+            appUserDetails.email(),
+            appUserDetails.enabled(),
+            appUserDetails.accountLocked(),
+            appUserDetails.accountExpired(),
+            appUserDetails.credentialsExpired()
+        );
+    }
 }
