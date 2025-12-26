@@ -5,6 +5,24 @@
         <link rel="icon" type="image/svg+xml" href="./src/assets/chatter-icon.svg"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <title>chatter</title>
+        <style>
+          :root {
+            --color-background: #242424;
+            --color-text: rgba(255, 255, 255, 0.87);
+          }
+
+          @media (prefers-color-scheme: light) {
+            :root {
+              --color-background: #ffffff;
+              --color-text: #213547;
+            }
+          }
+
+          body {
+            background-color: var(--color-background);
+            color: var(--color-text);
+          }
+        </style>
     </head>
     <body>
         <div id="root"></div>

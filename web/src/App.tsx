@@ -8,7 +8,7 @@ import type {UserSessionDto} from './generated/types.ts';
 
 function App() {
     const queryClient = useQueryClient();
-    const {data: user, isLoading} = useQuery({
+    const {data: user} = useQuery({
         queryKey: [QueryKeys.SESSION],
         queryFn: () => apiGet<UserSessionDto>('/session'),
         retry: false,
@@ -22,11 +22,7 @@ function App() {
 
     async function handleLogout() {
         await apiPost('/logout', {});
-        await queryClient.resetQueries({queryKey: [QueryKeys.SESSION]});
-    }
-
-    if (isLoading) {
-        return <h1>Loading...</h1>;
+        queryClient.setQueryData([QueryKeys.SESSION], null);
     }
 
     if (!isLoggedIn) {
