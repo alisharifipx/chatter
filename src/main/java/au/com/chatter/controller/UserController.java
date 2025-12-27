@@ -2,7 +2,6 @@ package au.com.chatter.controller;
 
 import au.com.chatter.controller.dto.AppUserDto;
 import au.com.chatter.controller.dto.NewAppUserRequestDto;
-import au.com.chatter.controller.dto.UserSessionDto;
 import au.com.chatter.domain.AppUserDetails;
 import au.com.chatter.service.AppUserDetailsService;
 import lombok.AllArgsConstructor;
@@ -21,10 +20,8 @@ public class UserController {
     private final AppUserDetailsService appUserDetailsService;
 
     @GetMapping("/session")
-    public ResponseEntity<UserSessionDto> getSession(@AuthenticationPrincipal AppUserDetails user) {
-        UserSessionDto response = new UserSessionDto(user.id(), user.username());
-
-        return ResponseEntity.ok(response);
+    public ResponseEntity<AppUserDto> getSession(@AuthenticationPrincipal AppUserDetails user) {
+        return ResponseEntity.ok(AppUserDto.fromDomain(user));
     }
 
     @PostMapping("/register")
