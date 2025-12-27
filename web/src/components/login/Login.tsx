@@ -1,11 +1,11 @@
-import {type ChangeEvent, type ReactElement, useState} from 'react';
 import {useMutation} from '@tanstack/react-query';
+import {type ChangeEvent, type ReactElement, useState} from 'react';
 import {apiPost} from '@/api/apiClient.ts';
-import {Button} from "@/components/ui/button.tsx"
-import {Card, CardContent, CardFooter, CardHeader, CardTitle,} from "@/components/ui/card.tsx"
-import {Input} from "@/components/ui/input.tsx"
-import {Label} from "@/components/ui/label.tsx"
-import chatterLogo from "@/assets/chatter-logo.svg";
+import chatterLogo from '@/assets/chatter-logo.svg';
+import {Button} from '@/components/ui/button.tsx';
+import {Card, CardContent, CardFooter, CardHeader, CardTitle} from '@/components/ui/card.tsx';
+import {Input} from '@/components/ui/input.tsx';
+import {Label} from '@/components/ui/label.tsx';
 
 type LoginProps = {
     onLoginSuccess: () => void;
@@ -42,8 +42,7 @@ export function Login({onLoginSuccess}: LoginProps): ReactElement {
 
     return (
         <div className="flex flex-col gap-5 animate-in fade-in zoom-in duration-700">
-            <img src={chatterLogo} className="logo"
-                 alt="chatter logo"/>
+            <img src={chatterLogo} className="logo" alt="chatter logo"/>
             <Card className="w-full max-w-sm">
                 <CardHeader className="text-left">
                     <CardTitle>Sign in to your account</CardTitle>
@@ -65,6 +64,7 @@ export function Login({onLoginSuccess}: LoginProps): ReactElement {
                                 <div className="flex items-center">
                                     <Label htmlFor="password">Password</Label>
                                     <a
+                                        // biome-ignore lint/a11y/useValidAnchor: TODO
                                         href="#"
                                         className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                                     >
@@ -77,8 +77,11 @@ export function Login({onLoginSuccess}: LoginProps): ReactElement {
                     </form>
                 </CardContent>
                 <CardFooter className="flex-col gap-2">
-                    <Button type="submit" className="w-full bg-chatter text-white hover:text-neutral-700"
-                            onClick={handleLoginClick}>
+                    <Button
+                        type="submit"
+                        className="w-full bg-chatter text-white hover:text-neutral-700"
+                        onClick={handleLoginClick}
+                    >
                         Login
                     </Button>
                     <Button variant="link">Don't have an account? Sign Up</Button> {/* TODO: Add registration page */}

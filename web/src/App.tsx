@@ -1,11 +1,11 @@
 import './App.css';
 import {useQuery, useQueryClient} from '@tanstack/react-query';
-import {Login} from '@/components/login/Login.tsx';
-import {QueryKeys} from './api/queryKeys.ts';
-import {apiGet, apiPost} from './api/apiClient.ts';
-import type {AppUserDto} from './generated/types.ts';
 import {Navigate, Route, Routes} from 'react-router-dom';
-import {ChatLayout} from "@/components/ChatLayout.tsx";
+import {ChatLayout} from '@/components/ChatLayout.tsx';
+import {Login} from '@/components/login/Login.tsx';
+import {apiGet, apiPost} from './api/apiClient.ts';
+import {QueryKeys} from './api/queryKeys.ts';
+import type {AppUserDto} from './generated/types.ts';
 
 function App() {
     const queryClient = useQueryClient();
