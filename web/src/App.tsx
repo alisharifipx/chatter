@@ -1,20 +1,20 @@
 import './App.css';
-import chatterLogo from './assets/chatter-logo.svg';
 import {useQuery, useQueryClient} from '@tanstack/react-query';
-import {Login} from './component/login/Login.tsx';
+import {Login} from '@/components/login/Login.tsx';
 import {QueryKeys} from './api/queryKeys.ts';
 import {apiGet, apiPost} from './api/apiClient.ts';
-import type {UserSessionDto} from './generated/types.ts';
+import type {AppUserDto} from './generated/types.ts';
+import {Navigate, Route, Routes} from 'react-router-dom';
+import {ChatLayout} from "@/components/ChatLayout.tsx";
 
 function App() {
     const queryClient = useQueryClient();
     const {data: user} = useQuery({
         queryKey: [QueryKeys.SESSION],
-        queryFn: () => apiGet<UserSessionDto>('/session'),
+        queryFn: () => apiGet<AppUserDto>('/session'),
         retry: false,
         staleTime: 1000 * 60 * 5,
     });
-    const isLoggedIn = !!user;
 
     function handleLoginSuccess() {
         void queryClient.invalidateQueries({queryKey: [QueryKeys.SESSION]});
@@ -25,22 +25,19 @@ function App() {
         queryClient.setQueryData([QueryKeys.SESSION], null);
     }
 
-    if (!isLoggedIn) {
-        return (
-            <>
-                <img src={chatterLogo} className="logo" alt="chatter logo"/>
-                <Login onLoginSuccess={handleLoginSuccess}/>
-            </>
-        );
-    }
-
     return (
-        <div>
-            <header>
-                <h1>Welcome back, {user.username}!</h1>
-                <button onClick={handleLogout}>Logout</button>
-            </header>
-        </div>
+        <Routes>
+            <Route
+                path="/login"
+                element={!user ? <Login onLoginSuccess={handleLoginSuccess}/> : <Navigate to="/"/>}
+            />
+            <Route
+                path="/"
+                element={user ? <ChatLayout user={user} onLogout={handleLogout}/> : <Navigate to="/login"/>}
+            />
+            {/* TODO: handle errors */}
+            <Route path="*" element={<Navigate to="/"/>}/>
+        </Routes>
     );
 }
 
