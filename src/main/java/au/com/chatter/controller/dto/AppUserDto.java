@@ -7,8 +7,9 @@ import au.com.chatter.domain.AppUserDetails;
  */
 public record AppUserDto(
     Long id,
-    String username,
     String email,
+    String firstName,
+    String lastName,
     boolean enabled,
     boolean accountExpired,
     boolean accountLocked,
@@ -18,8 +19,9 @@ public record AppUserDto(
     public static AppUserDto fromDomain(AppUserDetails appUserDetails) {
         return new AppUserDto(
             appUserDetails.id(),
-            appUserDetails.username(),
             appUserDetails.email(),
+            appUserDetails.firstName(),
+            appUserDetails.lastName(),
             appUserDetails.enabled(),
             appUserDetails.accountLocked(),
             appUserDetails.accountExpired(),

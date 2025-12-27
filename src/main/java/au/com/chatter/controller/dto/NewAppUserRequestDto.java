@@ -4,9 +4,10 @@ import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 public record NewAppUserRequestDto(
-    String username,
+    String email,
     String password,
-    String email
+    String firstName,
+    String lastName
 ) {
 
 }

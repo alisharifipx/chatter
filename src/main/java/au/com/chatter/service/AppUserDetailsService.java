@@ -22,13 +22,10 @@ public class AppUserDetailsService implements UserDetailsService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username)
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userRepository.findByEmail(email)
             .map(AppUserEntity::toDomain)
-            .orElseThrow(() -> new UsernameNotFoundException(String.format(
-                "No user found with username '%s'.",
-                username
-            )));
+            .orElseThrow(() -> new UsernameNotFoundException(String.format("No user found with email '%s'.", email)));
     }
 
     public AppUserDetails addUser(NewAppUserRequestDto request) {
@@ -39,7 +36,7 @@ public class AppUserDetailsService implements UserDetailsService {
         }
 
         AppUserEntity entity = AppUserEntity.builder()
-            .username(request.username())
+            .email(request.email())
             .password(encodedPassword)
             .email(request.email())
             .build();

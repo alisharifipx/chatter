@@ -12,9 +12,10 @@ import java.util.List;
  */
 public record AppUserDetails(
     Long id,
-    String username,
-    @JsonIgnore String password,
     String email,
+    @JsonIgnore String password,
+    String firstName,
+    String lastName,
     @JsonIgnore boolean enabled,
     @JsonIgnore boolean accountExpired,
     @JsonIgnore boolean accountLocked,
@@ -28,7 +29,7 @@ public record AppUserDetails(
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 
     @Override

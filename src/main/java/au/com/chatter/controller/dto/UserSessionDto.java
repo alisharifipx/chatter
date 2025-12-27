@@ -1,5 +1,5 @@
 package au.com.chatter.controller.dto;
 
-public record UserSessionDto(Long id, String username) {
+public record UserSessionDto(Long id, String email) {
 
 }

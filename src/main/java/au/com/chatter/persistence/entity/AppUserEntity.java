@@ -28,14 +28,15 @@ public class AppUserEntity implements UserDetails {
     private Long id;
 
     @Column(unique = true)
-    private String username;
+    private String email;
 
     private String password;
 
-    @Column(unique = true)
     @Getter
-    @Setter
-    private String email;
+    private String firstName;
+
+    @Getter
+    private String lastName;
 
     @Builder.Default
     @Setter
@@ -53,9 +54,10 @@ public class AppUserEntity implements UserDetails {
     public AppUserDetails toDomain() {
         return new AppUserDetails(
             Objects.requireNonNull(id, "Entity must be persisted before converting to domain"),
-            username,
-            password,
             email,
+            password,
+            firstName,
+            lastName,
             enabled,
             accountLocked,
             accountExpired,
@@ -70,7 +72,7 @@ public class AppUserEntity implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 
     @Override
