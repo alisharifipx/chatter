@@ -1,0 +1,12 @@
+{
+  "name": "chatter",
+  "version": "1.0.0",
+  "scripts": {
+    "reset": "./gradlew flywayClean flywayMigrate flywaySeed",
+    "web:dev": "pnpm --filter ./web dev",
+    "web:build": "pnpm --filter ./web build"
+  },
+  "author": "Ali Sharifi",
+  "license": "ISC",
+  "packageManager": "pnpm@10.26.2"
+}

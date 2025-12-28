@@ -1,13 +1,43 @@
+import org.flywaydb.gradle.task.FlywayMigrateTask
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath(libs.postgresql)
+        classpath(libs.flyway.database.postgresql)
+    }
+}
+
+def loadDotEnv() {
+    def env = [:]
+    def dotEnvFile = file(".env")
+    if (dotEnvFile.exists()) {
+        dotEnvFile.eachLine { line ->
+            def parts = line.split("=", 2)
+            if (parts.length == 2) {
+                env[parts[0].trim()] = parts[1].trim()
+            }
+        }
+    }
+    return env
+}
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '4.0.1'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'cz.habarta.typescript-generator' version '3.2.1263'
+    id 'org.flywaydb.flyway' version libs.versions.flyway
 }
 
 group = 'au.com'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.0-SNAPSHOT'
 description = 'chatter'
+
+// .env file
+def dotEnv = loadDotEnv()
 
 java {
     toolchain {
@@ -29,11 +59,14 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-flyway'
 
     runtimeOnly 'org.postgresql:postgresql'
+    runtimeOnly 'org.flywaydb:flyway-database-postgresql'
 
     compileOnly 'org.projectlombok:lombok'
 
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
 
     // Test
@@ -44,6 +77,22 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+flyway {
+    url = 'jdbc:postgresql://localhost:5432/security_users'
+    user = dotEnv['DB_USERNAME']
+    password = dotEnv['DB_PASSWORD']
+    cleanDisabled = false
+}
+
+tasks.register('flywaySeed', FlywayMigrateTask) {
+    description = 'Runs only the seed data migrations from db/data'
+    group = 'database'
+    locations = ['filesystem:src/main/resources/db/data']
+    table = 'flyway_seed_history'
+    baselineOnMigrate = true
+    baselineVersion = '0'
 }
 
 generateTypeScript {

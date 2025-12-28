@@ -1,0 +1,7 @@
+[versions]
+postgresql = "42.7.8"
+flyway = "11.20.0"
+
+[libraries]
+postgresql = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
+flyway-database-postgresql = { group = "org.flywaydb", name = "flyway-database-postgresql", version.ref = "flyway" }

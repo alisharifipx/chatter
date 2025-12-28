@@ -2,6 +2,8 @@ server:
   port: 8080
 
 spring:
+  profiles:
+    active: dev
   config:
     import: optional:file:.env[.properties]
   application:
@@ -12,13 +14,16 @@ spring:
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
-    defer-datasource-initialization: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     show-sql: true
-  sql:
-    init:
-      mode: always
+  flyway:
+    enabled: true
+    clean-disabled: false
+    baseline-on-migrate: true
+    baseline-version: 0
+    locations:
+      - classpath:db/migration
 
 logging:
   level:
