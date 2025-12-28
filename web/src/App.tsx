@@ -3,6 +3,7 @@ import {useQuery, useQueryClient} from '@tanstack/react-query';
 import {Navigate, Route, Routes} from 'react-router-dom';
 import {ChatLayout} from '@/components/ChatLayout.tsx';
 import {Login} from '@/components/login/Login.tsx';
+import {Registration} from '@/components/login/Registration.tsx';
 import {apiGet, apiPost} from './api/apiClient.ts';
 import {QueryKeys} from './api/queryKeys.ts';
 import type {AppUserDto} from './generated/types.ts';
@@ -31,6 +32,7 @@ function App() {
                 path="/login"
                 element={!user ? <Login onLoginSuccess={handleLoginSuccess}/> : <Navigate to="/"/>}
             />
+            <Route path="/register" element={!user ? <Registration/> : <Navigate to="/"/>}/>
             <Route
                 path="/"
                 element={user ? <ChatLayout user={user} onLogout={handleLogout}/> : <Navigate to="/login"/>}

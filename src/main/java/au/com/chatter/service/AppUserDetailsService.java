@@ -36,9 +36,10 @@ public class AppUserDetailsService implements UserDetailsService {
         }
 
         AppUserEntity entity = AppUserEntity.builder()
+            .firstName(request.firstName())
+            .lastName(request.lastName())
             .email(request.email())
             .password(encodedPassword)
-            .email(request.email())
             .build();
 
         AppUserEntity savedEntity = userRepository.save(entity);

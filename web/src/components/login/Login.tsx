@@ -1,5 +1,6 @@
 import {useMutation} from '@tanstack/react-query';
-import {type ChangeEvent, type ReactElement, useState} from 'react';
+import {type FormEvent, type ReactElement, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 import {apiPost} from '@/api/apiClient.ts';
 import chatterLogo from '@/assets/chatter-logo.svg';
 import {Button} from '@/components/ui/button.tsx';
@@ -8,85 +9,97 @@ import {Input} from '@/components/ui/input.tsx';
 import {Label} from '@/components/ui/label.tsx';
 
 type LoginProps = {
-    onLoginSuccess: () => void;
+	onLoginSuccess: () => void;
 };
 
-export function Login({onLoginSuccess}: LoginProps): ReactElement {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+export function Login({ onLoginSuccess }: LoginProps): ReactElement {
+	const navigate = useNavigate();
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-    const mutation = useMutation({
-        mutationFn: () => {
-            const formData = new FormData();
-            formData.append('username', email);
-            formData.append('password', password);
+	const { mutate, isPending } = useMutation({
+		mutationFn: () => {
+			const formData = new FormData();
+			formData.append('username', email);
+			formData.append('password', password);
 
-            return apiPost('/login', formData);
-        },
-        onSuccess: () => {
-            onLoginSuccess();
-        },
-    });
+			return apiPost('/login', formData);
+		},
+		onSuccess: () => {
+			setErrorMessage(null);
+			onLoginSuccess();
+		},
+		onError: () => setErrorMessage('Incorrect email or password'),
+	});
 
-    function handleEmailChange(e: ChangeEvent<HTMLInputElement>) {
-        setEmail(e.target.value);
-    }
+	function handleSubmit(e: FormEvent<HTMLFormElement>) {
+		e.preventDefault();
 
-    function handlePasswordChange(e: ChangeEvent<HTMLInputElement>) {
-        setPassword(e.target.value);
-    }
+		if (errorMessage) {
+			return;
+		}
 
-    function handleLoginClick() {
-        mutation.mutate();
-    }
+		mutate();
+	}
 
-    return (
-        <div className="flex flex-col gap-5 animate-in fade-in zoom-in duration-700">
-            <img src={chatterLogo} className="logo" alt="chatter logo"/>
-            <Card className="w-full max-w-sm">
-                <CardHeader className="text-left">
-                    <CardTitle>Sign in to your account</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <form>
-                        <div className="flex flex-col gap-6">
-                            <div className="grid gap-2">
-                                <Label htmlFor="email">Email</Label>
-                                <Input
-                                    id="email"
-                                    type="email"
-                                    placeholder="me@example.com"
-                                    required
-                                    onChange={handleEmailChange}
-                                />
-                            </div>
-                            <div className="grid gap-2">
-                                <div className="flex items-center">
-                                    <Label htmlFor="password">Password</Label>
-                                    <a
-                                        // biome-ignore lint/a11y/useValidAnchor: TODO
-                                        href="#"
-                                        className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                                    >
-                                        Forgot your password? {/* TODO: Add password reset */}
-                                    </a>
-                                </div>
-                                <Input id="password" type="password" required onChange={handlePasswordChange}/>
-                            </div>
-                        </div>
-                    </form>
-                </CardContent>
-                <CardFooter className="flex-col gap-2">
-                    <Button
-                        type="submit"
-                        className="w-full bg-chatter text-white hover:text-neutral-700"
-                        onClick={handleLoginClick}
-                    >
-                        Login
-                    </Button>
-                    <Button variant="link">Don't have an account? Sign Up</Button> {/* TODO: Add registration page */}
-                </CardFooter>
-            </Card>
-        </div>
-    );
+	return (
+		<div className="flex flex-col gap-5">
+			<img src={chatterLogo} className="logo" alt="chatter logo" />
+			<Card className="w-full max-w-sm">
+				<CardHeader className="text-left">
+					<CardTitle>Sign in to your account</CardTitle>
+				</CardHeader>
+				<CardContent>
+					<form id="login-form" onSubmit={handleSubmit}>
+						<div className="flex flex-col gap-6">
+							<div className="grid gap-2">
+								<Label htmlFor="email">Email</Label>
+								<Input
+									id="email"
+									type="email"
+									placeholder="me@example.com"
+									required
+									onChange={(e) => setEmail(e.target.value)}
+								/>
+							</div>
+							<div className="grid gap-2">
+								<div className="flex items-center">
+									<Label htmlFor="password">Password</Label>
+									<a
+										// biome-ignore lint/a11y/useValidAnchor: TODO
+										href="#"
+										className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
+									>
+										Forgot your password? {/* TODO: Add password reset */}
+									</a>
+								</div>
+								<Input
+									id="password"
+									type="password"
+									required
+									onChange={(e) => setPassword(e.target.value)}
+								/>
+								{errorMessage && (
+									<span className="text-sm text-destructive text-left">{errorMessage}</span>
+								)}
+							</div>
+						</div>
+					</form>
+				</CardContent>
+				<CardFooter className="flex-col gap-2">
+					<Button
+						form="login-form"
+						type="submit"
+						className="w-full bg-chatter text-white hover:text-neutral-700"
+					>
+						{isPending ? 'Signing in...' : 'Sign in'}
+					</Button>
+					<Button variant="link" onClick={() => navigate('/register')} disabled={isPending}>
+						Don't have an account? Sign Up
+					</Button>
+				</CardFooter>
+			</Card>
+		</div>
+	);
 }
