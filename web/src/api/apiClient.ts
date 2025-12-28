@@ -1,4 +1,4 @@
-import axios, {type AxiosInstance, type InternalAxiosRequestConfig} from 'axios';
+import axios, { type AxiosInstance, type InternalAxiosRequestConfig } from 'axios';
 
 const client: AxiosInstance = axios.create({
 	baseURL: '/api',

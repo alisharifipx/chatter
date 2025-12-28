@@ -1,12 +1,12 @@
-import {useMutation} from '@tanstack/react-query';
-import {type FormEvent, type ReactElement, useState} from 'react';
-import {useNavigate} from 'react-router-dom';
-import {apiPost} from '@/api/apiClient.ts';
+import { useMutation } from '@tanstack/react-query';
+import { type FormEvent, type ReactElement, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { apiPost } from '@/api/apiClient.ts';
 import chatterLogo from '@/assets/chatter-logo.svg';
-import {Button} from '@/components/ui/button.tsx';
-import {Card, CardContent, CardFooter, CardHeader, CardTitle} from '@/components/ui/card.tsx';
-import {Input} from '@/components/ui/input.tsx';
-import {Label} from '@/components/ui/label.tsx';
+import { Button } from '@/components/ui/Button.tsx';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/Card.tsx';
+import { Input } from '@/components/ui/Input.tsx';
+import { Label } from '@/components/ui/Label.tsx';
 
 type LoginProps = {
 	onLoginSuccess: () => void;
@@ -44,7 +44,7 @@ export function Login({ onLoginSuccess }: LoginProps): ReactElement {
 	}
 
 	return (
-		<div className="flex flex-col gap-5">
+		<div className="min-h-full w-full flex flex-col items-center justify-center bg-background gap-5 p-4">
 			<img src={chatterLogo} className="logo" alt="chatter logo" />
 			<Card className="w-full max-w-sm">
 				<CardHeader className="text-left">
