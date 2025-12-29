@@ -1,7 +1,16 @@
 [versions]
-postgresql = "42.7.8"
 flyway = "11.20.0"
+postgresql = "42.7.8"
+spring-boot = "4.0.1"
+spring-dependency-management = "1.1.7"
+typescript-generator = "3.2.1263"
 
 [libraries]
 postgresql = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
 flyway-database-postgresql = { group = "org.flywaydb", name = "flyway-database-postgresql", version.ref = "flyway" }
+
+[plugins]
+flyway = { id = "org.flywaydb.flyway", version.ref = "flyway" }
+spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dependency-management" }
+typescript-generator = { id = "cz.habarta.typescript-generator", version.ref = "typescript-generator" }
