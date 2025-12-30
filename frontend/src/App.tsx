@@ -17,6 +17,10 @@ function App() {
 		staleTime: 1000 * 60 * 5,
 	});
 
+    if (isPending) {
+        return;
+    }
+
 	// TODO: move this out of here and into Login, then navigate back on login.
 	function handleLoginSuccess() {
 		void queryClient.invalidateQueries({ queryKey: [QueryKeys.SESSION] });
