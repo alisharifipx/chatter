@@ -20,13 +20,20 @@ function App() {
 		return;
 	}
 
+	if (!user) {
+		return (
+			<Routes>
+				<Route path="/login" element={<Login />} />
+				<Route path="/register" element={<Registration />} />
+				<Route path="*" element={<Navigate to="/login" />} />
+			</Routes>
+		);
+	}
+
 	return (
 		<Routes>
-			<Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
-			<Route path="/register" element={!user ? <Registration /> : <Navigate to="/" />} />
-			<Route path="/" element={user && <AppContainer user={user} />} />
-			{/* TODO: handle errors */}
-			<Route path="*" element={<Navigate to="/" />} />
+			<Route path="/chat" element={<AppContainer user={user} />} />
+			<Route path="*" element={<Navigate to="/chat" />} />
 		</Routes>
 	);
 }

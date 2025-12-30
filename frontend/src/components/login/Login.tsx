@@ -26,6 +26,7 @@ export function Login(): ReactElement {
 		},
 		onSuccess: () => {
 			setErrorMessage(null);
+			navigate('/chat');
 			void queryClient.invalidateQueries({ queryKey: [QueryKeys.SESSION] });
 		},
 		onError: () => setErrorMessage('Incorrect email or password'),
