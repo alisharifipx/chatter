@@ -1,18 +1,16 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { type FormEvent, type ReactElement, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { apiPost } from '@/api/apiClient.ts';
+import { QueryKeys } from '@/api/queryKeys.ts';
 import chatterLogo from '@/assets/chatter-logo.svg';
 import { Button } from '@/components/ui/Button.tsx';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/Card.tsx';
 import { Input } from '@/components/ui/Input.tsx';
 import { Label } from '@/components/ui/Label.tsx';
 
-type LoginProps = {
-	onLoginSuccess: () => void;
-};
-
-export function Login({ onLoginSuccess }: LoginProps): ReactElement {
+export function Login(): ReactElement {
+	const queryClient = useQueryClient();
 	const navigate = useNavigate();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
@@ -28,7 +26,7 @@ export function Login({ onLoginSuccess }: LoginProps): ReactElement {
 		},
 		onSuccess: () => {
 			setErrorMessage(null);
-			onLoginSuccess();
+			void queryClient.invalidateQueries({ queryKey: [QueryKeys.SESSION] });
 		},
 		onError: () => setErrorMessage('Incorrect email or password'),
 	});

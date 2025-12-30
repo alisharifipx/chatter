@@ -8,14 +8,11 @@ import type { AppUserDto } from '@/generated/types.ts';
 
 type ChatLayoutProps = {
 	user: AppUserDto;
-	loading?: boolean;
 };
 
-export function AppContainer({ user, loading }: ChatLayoutProps): ReactElement {
+export function AppContainer({ user }: ChatLayoutProps): ReactElement {
 	const navigate = useNavigate();
-	// const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
 
-	// TODO: remove this and fix session request
 	if (!user) {
 		navigate('/login');
 	}
@@ -25,7 +22,7 @@ export function AppContainer({ user, loading }: ChatLayoutProps): ReactElement {
 			<SidebarProvider className="flex flex-col flex-1">
 				<AppHeader chatName="chatter" />
 				<div className="flex flex-1 overflow-hidden">
-					<AppSideBar user={user} loading={loading} />
+					<AppSideBar user={user} loading={false} />
 					<SidebarInset>
 						<ChatBox />
 					</SidebarInset>

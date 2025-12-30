@@ -1,6 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { BadgeCheck, ChevronsUpDown, LogOut } from 'lucide-react';
 import type { ReactElement } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { apiPost } from '@/api/apiClient.ts';
 import { QueryKeys } from '@/api/queryKeys.ts';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar.tsx';
@@ -24,6 +25,7 @@ type NavUserProps = {
 
 export function NavUser({ user, loading }: NavUserProps): ReactElement {
 	const queryClient = useQueryClient();
+	const navigate = useNavigate();
 	const { isMobile } = useSidebar();
 
 	if (loading) {
@@ -44,6 +46,7 @@ export function NavUser({ user, loading }: NavUserProps): ReactElement {
 	async function handleLogout() {
 		await apiPost('/logout', {});
 		queryClient.setQueryData([QueryKeys.SESSION], null);
+		navigate('/login');
 	}
 
 	return (
