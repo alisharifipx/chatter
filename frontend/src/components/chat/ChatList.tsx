@@ -7,6 +7,7 @@ import { ChatListSkeleton } from '@/components/chat/ChatListSkeleton.tsx';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar.tsx';
 import { SidebarGroup, SidebarGroupContent } from '@/components/ui/Sidebar.tsx';
 import type { ChatSummaryDto } from '@/generated/types.ts';
+import { cn } from '@/lib/utils.ts';
 
 export function ChatList(): ReactElement {
 	const { data: chats = [], isLoading } = useQuery({
@@ -24,7 +25,12 @@ export function ChatList(): ReactElement {
 						<NavLink
 							key={chat.id}
 							to={`/chat/${chat.id}`}
-							className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground flex items-center gap-1 pl-2 pr-3 py-4 text-sm leading-tight whitespace-nowrap"
+							className={({ isActive }) =>
+								cn(
+									'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground flex items-center gap-1 pl-2 pr-3 py-4 text-sm leading-tight whitespace-nowrap',
+									isActive && 'bg-sidebar-accent',
+								)
+							}
 						>
 							<Avatar className="h-12 w-12 rounded-lg">
 								<AvatarImage src="" alt={chat.name} />
