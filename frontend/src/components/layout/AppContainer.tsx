@@ -2,7 +2,7 @@ import { type ReactElement, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChatBox } from '@/components/chat/ChatBox.tsx';
 import { AppHeader } from '@/components/layout/header/AppHeader.tsx';
-import { AppSideBar } from '@/components/layout/sidebar/AppSideBar.tsx';
+import AppSideBar from '@/components/layout/sidebar/AppSideBar.tsx';
 import { SidebarInset, SidebarProvider } from '@/components/ui/Sidebar.tsx';
 import type { AppUserDto } from '@/generated/types.ts';
 
@@ -22,9 +22,10 @@ export function AppContainer({ user }: ChatLayoutProps): ReactElement {
 	return (
 		<div className="flex h-screen w-full flex-col [--header-height:--spacing(14)]">
 			<SidebarProvider className="flex flex-col flex-1">
+				{/* TODO: Figure out how to set the app header to match the selected chat */}
 				<AppHeader chatName="chatter" />
 				<div className="flex flex-1 overflow-hidden">
-					<AppSideBar user={user} loading={false} />
+					<AppSideBar user={user} loading={false} onSearchResultSelect={() => {}} />
 					<SidebarInset>
 						<ChatBox />
 					</SidebarInset>

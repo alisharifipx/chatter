@@ -1,3 +1,6 @@
+/* tslint:disable */
+/* eslint-disable */
+
 export interface AppUserDto {
     accountExpired: boolean;
     accountLocked: boolean;
@@ -43,7 +46,8 @@ export interface NewAppUserRequestDto {
     password: string;
 }
 
-export interface UserSessionDto {
-	email: string;
-	id: number;
+export interface UserSearchResultDto {
+    firstName: string;
+    id: number;
+    lastName: string;
 }

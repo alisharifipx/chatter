@@ -1,6 +1,7 @@
 package au.com.chatter.service;
 
 import au.com.chatter.controller.dto.NewAppUserRequestDto;
+import au.com.chatter.controller.dto.UserSearchResultDto;
 import au.com.chatter.domain.AppUserDetails;
 import au.com.chatter.persistence.entity.AppUserEntity;
 import au.com.chatter.persistence.repository.UserRepository;
@@ -11,6 +12,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Service for handling app user business logic.
  */
@@ -20,6 +24,7 @@ public class AppUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final SecurityService securityService;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -45,5 +50,13 @@ public class AppUserDetailsService implements UserDetailsService {
         AppUserEntity savedEntity = userRepository.save(entity);
 
         return savedEntity.toDomain();
+    }
+
+    public List<UserSearchResultDto> getSearchedUsers(String query) {
+        long currentUserId = securityService.getCurrentUser().id();
+
+        return userRepository.searchUsers(query, currentUserId).stream()
+            .map(UserSearchResultDto::fromEntity)
+            .collect(Collectors.toList());
     }
 }
