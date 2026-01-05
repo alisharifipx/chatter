@@ -3,6 +3,8 @@
  */
 export const QueryKeys = {
 	SESSION: 'session',
+	CHAT: 'chat',
+	CHATS: 'chats',
 } as const;
 
 /**

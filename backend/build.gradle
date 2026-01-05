@@ -97,7 +97,7 @@ tasks.register('flywaySeed', FlywayMigrateTask) {
 
 generateTypeScript {
     jsonLibrary = 'jackson2'
-    outputFile = 'web/src/generated/types.ts'
+    outputFile = '../frontend/src/generated/types.ts'
     outputFileType = 'implementationFile'
     outputKind = 'module'
     mapClasses = 'asInterfaces'

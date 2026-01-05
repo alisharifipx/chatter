@@ -11,7 +11,7 @@ import java.util.List;
  * Domain object for a user within the app.
  */
 public record AppUserDetails(
-    Long id,
+    long id,
     String email,
     @JsonIgnore String password,
     String firstName,

@@ -1,15 +1,12 @@
 package au.com.chatter.persistence.entity;
 
 import au.com.chatter.domain.AppUserDetails;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Database entity for an app user.
@@ -24,10 +21,10 @@ public class AppUserEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
-    @Nullable
     private Long id;
 
     @Column(unique = true)
+    @Getter
     private String email;
 
     private String password;
@@ -50,6 +47,9 @@ public class AppUserEntity implements UserDetails {
 
     @Setter
     private boolean credentialsExpired;
+
+    @ManyToMany(mappedBy = "participants")
+    private Set<ChatEntity> conversations = new HashSet<>();
 
     public AppUserDetails toDomain() {
         return new AppUserDetails(

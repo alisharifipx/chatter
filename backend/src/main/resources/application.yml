@@ -18,7 +18,7 @@ spring:
       ddl-auto: validate
     show-sql: true
   flyway:
-    enabled: true
+    enabled: false
     clean-disabled: false
     baseline-on-migrate: true
     baseline-version: 0

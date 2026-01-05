@@ -6,7 +6,7 @@ import au.com.chatter.domain.AppUserDetails;
  * DTO representing an app user.
  */
 public record AppUserDto(
-    Long id,
+    long id,
     String email,
     String firstName,
     String lastName,

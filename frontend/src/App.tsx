@@ -1,6 +1,7 @@
 import './App.css';
 import { useQuery } from '@tanstack/react-query';
 import { Navigate, Route, Routes } from 'react-router-dom';
+import { ChatBox } from '@/components/chat/ChatBox.tsx';
 import { AppContainer } from '@/components/layout/AppContainer.tsx';
 import { Login } from '@/components/login/Login.tsx';
 import { Registration } from '@/components/login/Registration.tsx';
@@ -32,7 +33,9 @@ function App() {
 
 	return (
 		<Routes>
-			<Route path="/chat" element={<AppContainer user={user} />} />
+			<Route path="/chat" element={<AppContainer user={user} />}>
+				<Route path=":id" element={<ChatBox />} />
+			</Route>
 			<Route path="*" element={<Navigate to="/chat" />} />
 		</Routes>
 	);
