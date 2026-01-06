@@ -1,6 +1,6 @@
 import { type ReactElement, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChatBox } from '@/components/chat/ChatBox.tsx';
+import { ChatContainer } from '@/components/chat/ChatContainer.tsx';
 import { AppHeader } from '@/components/layout/header/AppHeader.tsx';
 import AppSideBar from '@/components/layout/sidebar/AppSideBar.tsx';
 import { SidebarInset, SidebarProvider } from '@/components/ui/Sidebar.tsx';
@@ -27,7 +27,7 @@ export function AppContainer({ user }: ChatLayoutProps): ReactElement {
 				<div className="flex flex-1 overflow-hidden">
 					<AppSideBar user={user} loading={false} onSearchResultSelect={() => {}} />
 					<SidebarInset>
-						<ChatBox />
+						<ChatContainer />
 					</SidebarInset>
 				</div>
 			</SidebarProvider>
