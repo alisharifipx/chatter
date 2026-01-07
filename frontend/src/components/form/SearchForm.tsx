@@ -1,6 +1,5 @@
 import { Search } from 'lucide-react';
 import type { ComponentProps } from 'react';
-import { Label } from '@/components/ui/Label.tsx';
 import { SidebarInput } from '@/components/ui/Sidebar.tsx';
 
 type SearchFormProps = ComponentProps<'form'> & {
@@ -11,12 +10,9 @@ export function SearchForm({ onSearchChange }: SearchFormProps) {
 	return (
 		<form onSubmit={(e) => e.preventDefault()}>
 			<div className="relative">
-				<Label htmlFor="search" className="sr-only">
-					Search
-				</Label>
 				<SidebarInput
 					id="search"
-					placeholder="Type to search..."
+					placeholder="Search..."
 					className="h-8 pl-7"
 					onChange={(e) => onSearchChange(e.target.value)}
 				/>

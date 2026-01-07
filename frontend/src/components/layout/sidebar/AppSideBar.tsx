@@ -2,10 +2,12 @@ import { useQuery } from '@tanstack/react-query';
 import { type ComponentProps, useState } from 'react';
 import { apiGet } from '@/api/apiClient.ts';
 import { ChatList } from '@/components/chat/ChatList.tsx';
+import { CHATS_TAB, FRIENDS_TAB } from '@/components/chat/constants.ts';
 import { SearchList } from '@/components/chat/SearchList.tsx';
 import { SearchForm } from '@/components/form/SearchForm.tsx';
 import { NavUser } from '@/components/layout/sidebar/NavUser.tsx';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '@/components/ui/Sidebar.tsx';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs.tsx';
 import type { AppUserDto, UserSearchResultDto } from '@/generated/types.ts';
 import { useDebounce } from '@/hooks/useDebounce.ts';
 
@@ -30,36 +32,43 @@ function AppSideBar({ user, loading, onSearchResultSelect, ...props }: AppSideBa
 	const isSearching = debouncedSearchTerm.length > 0;
 
 	return (
-		<Sidebar collapsible="none" className="top-(--header-height) h-[calc(100svh-var(--header-height))]" {...props}>
-			<SidebarHeader className="border-b transition-all duration-100 ease-in-out group-data-[state=collapsed]:border-none overflow-hidden">
-				<div className="flex flex-col gap-3 transition-opacity duration-100 group-data-[state=collapsed]:opacity-0 group-data-[state=collapsed]:invisible whitespace-nowrap">
-					<div className="flex w-full items-center justify-between ml-2">
-						<div className="text-foreground text-base font-medium">Chats</div>
-						{/*TODO: Add 'Unread' switch*/}
-						{/*<Label className="flex items-center gap-2 text-sm">*/}
-						{/*	<span>Unread</span>*/}
-						{/*	<Switch className="shadow-none" />*/}
-						{/*</Label>*/}
+		<Tabs defaultValue={CHATS_TAB}>
+			<Sidebar
+				collapsible="none"
+				className="top-(--header-height) h-[calc(100svh-var(--header-height))]"
+				{...props}
+			>
+				<SidebarHeader className="border-b transition-all duration-100 ease-in-out group-data-[state=collapsed]:border-none overflow-hidden">
+					<TabsList className="w-full">
+						<TabsTrigger value={CHATS_TAB}>{CHATS_TAB}</TabsTrigger>
+						<TabsTrigger value={FRIENDS_TAB}>{FRIENDS_TAB}</TabsTrigger>
+					</TabsList>
+					<div className="flex flex-col gap-3 transition-opacity duration-100 group-data-[state=collapsed]:opacity-0 group-data-[state=collapsed]:invisible whitespace-nowrap">
+						<SearchForm onSearchChange={setSearchTerm} />
 					</div>
-					<SearchForm onSearchChange={setSearchTerm} />
-				</div>
-			</SidebarHeader>
-			<SidebarContent>
-				{isSearching ? (
-					<SearchList
-						results={searchResults ?? []}
-						loading={isFetching}
-						onSearchResultSelect={onSearchResultSelect}
-					/>
-				) : (
-					<ChatList />
-				)}
-			</SidebarContent>
-			<SidebarFooter>
-				<NavUser user={user} loading={loading} />
-			</SidebarFooter>
-			<SidebarRail />
-		</Sidebar>
+				</SidebarHeader>
+				<SidebarContent>
+					{isSearching ? (
+						<SearchList
+							results={searchResults ?? []}
+							loading={isFetching}
+							onSearchResultSelect={onSearchResultSelect}
+						/>
+					) : (
+						<>
+							<TabsContent value={CHATS_TAB}>
+								<ChatList />
+							</TabsContent>
+							<TabsContent value={FRIENDS_TAB}></TabsContent>
+						</>
+					)}
+				</SidebarContent>
+				<SidebarFooter>
+					<NavUser user={user} loading={loading} />
+				</SidebarFooter>
+				<SidebarRail />
+			</Sidebar>
+		</Tabs>
 	);
 }
 
